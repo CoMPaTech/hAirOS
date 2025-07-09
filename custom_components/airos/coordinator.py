@@ -6,7 +6,7 @@ from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
 from .airos8 import AirOS8
-from .const import DOMAIN, LOGGER
+from .const import DOMAIN, LOGGER, SCAN_INTERVAL
 
 
 class AirOSData(NamedTuple):
@@ -22,7 +22,7 @@ class AirOSDataUpdateCoordinator(DataUpdateCoordinator[AirOSData]):  # type: ign
 
     def __init__(self, hass: HomeAssistant, airdevice: AirOS8, interval: float) -> None:
         """Initialize the coordinator."""
-        super().__init__(hass, LOGGER, name=DOMAIN, update_interval=interval)
+        super().__init__(hass, LOGGER, name=DOMAIN, update_interval=SCAN_INTERVAL)
         self.airdevice = airdevice
 
     async def _async_update_data(self) -> AirOSData:

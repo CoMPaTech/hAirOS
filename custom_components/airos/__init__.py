@@ -7,7 +7,7 @@ from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import device_registry as dr
 
 from .airos8 import AirOS8
-from .const import DOMAIN, LOGGER
+from .const import DOMAIN, LOGGER, SCAN_INTERVAL
 from .coordinator import AirOSDataUpdateCoordinator
 
 PLATFORMS: list[Platform] = [
@@ -69,7 +69,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.config_entries.async_update_entry(entry, unique_id=f"airos-{device_id}")
 
     # Set up coordinator for fetching data
-    coordinator = AirOSDataUpdateCoordinator(hass, airdevice)  # type: ignore[arg-type]
+    coordinator = AirOSDataUpdateCoordinator(hass, airdevice, SCAN_INTERVAL)  # type: ignore[arg-type]
     await coordinator.async_config_entry_first_refresh()
 
     # Store coordinator for use in platforms
