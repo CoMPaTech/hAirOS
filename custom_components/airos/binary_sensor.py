@@ -70,7 +70,7 @@ BINARY_SENSORS: tuple[AirOSBinarySensorEntityDescription, ...] = (
     AirOSBinarySensorEntityDescription(
         key="firewall_iptables",
         translation_key="firewall_iptables",
-        device_class=BinarySensorDeviceClass.OPEN,
+        device_class=BinarySensorDeviceClass.OPENING,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("firewall",{}).get("iptables"),
         entity_registry_enabled_default=False,
@@ -78,7 +78,7 @@ BINARY_SENSORS: tuple[AirOSBinarySensorEntityDescription, ...] = (
     AirOSBinarySensorEntityDescription(
         key="firewall_ebtables",
         translation_key="firewall_ebtables",
-        device_class=BinarySensorDeviceClass.OPEN,
+        device_class=BinarySensorDeviceClass.OPENING,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("firewall",{}).get("ebtables"),
         entity_registry_enabled_default=False,
@@ -86,7 +86,7 @@ BINARY_SENSORS: tuple[AirOSBinarySensorEntityDescription, ...] = (
     AirOSBinarySensorEntityDescription(
         key="firewall_ip6tables",
         translation_key="firewall_ip6tables",
-        device_class=BinarySensorDeviceClass.OPEN,
+        device_class=BinarySensorDeviceClass.OPENING,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("firewall",{}).get("ip6tables"),
         entity_registry_enabled_default=False,
@@ -94,7 +94,7 @@ BINARY_SENSORS: tuple[AirOSBinarySensorEntityDescription, ...] = (
     AirOSBinarySensorEntityDescription(
         key="firewall_eb6tables",
         translation_key="firewall_eb6tables",
-        device_class=BinarySensorDeviceClass.OPEN,
+        device_class=BinarySensorDeviceClass.OPENING,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("firewall",{}).get("eb6tables"),
         entity_registry_enabled_default=False,
