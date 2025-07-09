@@ -42,6 +42,7 @@ SENSORS: tuple[AirOSSensorEntityDescription, ...] = (
         device_class=None,
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda data: data.get("host",{}).get("cpuload"),
+        entity_registry_enabled_default=False,
     ),
     AirOSSensorEntityDescription(
         key="host_netrole",

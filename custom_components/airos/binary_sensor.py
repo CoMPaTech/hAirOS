@@ -6,6 +6,7 @@ from dataclasses import dataclass
 from typing import Any
 
 from homeassistant.components.binary_sensor import (
+    BinarySensorDeviceClass,
     BinarySensorEntity,
     BinarySensorEntityDescription,
 )
@@ -25,81 +26,78 @@ class AirOSBinarySensorEntityDescription(BinarySensorEntityDescription):  # type
 
     value_fn: Callable[[dict[str, Any]], bool | None]
 
-    icon_off: str | None = None
-
 
 BINARY_SENSORS: tuple[AirOSBinarySensorEntityDescription, ...] = (
     AirOSBinarySensorEntityDescription(
         key="portfw",
         translation_key="port_forwarding",
-        icon="mdi:forward",
-        icon_off="mdi:cancel",
+        device_class=BinarySensorDeviceClass.DOOR,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("portfw"),
     ),
     AirOSBinarySensorEntityDescription(
         key="services_dhcp_client",
         translation_key="dhcp_client",
-        icon="mdi:check-circle",
-        icon_off="mdi:cancel",
+        device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("services",{}).get("dhcpc"),
+        entity_registry_enabled_default=False,
     ),
     AirOSBinarySensorEntityDescription(
         key="services_dhcp_server",
         translation_key="dhcp_server",
-        icon="mdi:check-circle",
-        icon_off="mdi:cancel",
+        device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("services",{}).get("dhcpd"),
+        entity_registry_enabled_default=False,
     ),
     AirOSBinarySensorEntityDescription(
         key="services_dhcp6_server",
         translation_key="dhcp6_server",
-        icon="mdi:check-circle",
-        icon_off="mdi:cancel",
+        device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("services",{}).get("dhcp6d_stateful"),
+        entity_registry_enabled_default=False,
     ),
     AirOSBinarySensorEntityDescription(
         key="services_pppoe",
         translation_key="pppoe",
-        icon="mdi:check-circle",
-        icon_off="mdi:cancel",
+        device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("services",{}).get("pppoe"),
+        entity_registry_enabled_default=False,
     ),
     AirOSBinarySensorEntityDescription(
         key="firewall_iptables",
         translation_key="firewall_iptables",
-        icon="mdi:check-circle",
-        icon_off="mdi:cancel",
+        device_class=BinarySensorDeviceClass.OPEN,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("firewall",{}).get("iptables"),
+        entity_registry_enabled_default=False,
     ),
     AirOSBinarySensorEntityDescription(
         key="firewall_ebtables",
         translation_key="firewall_ebtables",
-        icon="mdi:check-circle",
-        icon_off="mdi:cancel",
+        device_class=BinarySensorDeviceClass.OPEN,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("firewall",{}).get("ebtables"),
+        entity_registry_enabled_default=False,
     ),
     AirOSBinarySensorEntityDescription(
         key="firewall_ip6tables",
         translation_key="firewall_ip6tables",
-        icon="mdi:check-circle",
-        icon_off="mdi:cancel",
+        device_class=BinarySensorDeviceClass.OPEN,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("firewall",{}).get("ip6tables"),
+        entity_registry_enabled_default=False,
     ),
     AirOSBinarySensorEntityDescription(
         key="firewall_eb6tables",
         translation_key="firewall_eb6tables",
-        icon="mdi:check-circle",
-        icon_off="mdi:cancel",
+        device_class=BinarySensorDeviceClass.OPEN,
         entity_category=EntityCategory.DIAGNOSTIC,
         value_fn=lambda data: data.get("firewall",{}).get("eb6tables"),
+        entity_registry_enabled_default=False,
     ),
 )
 
