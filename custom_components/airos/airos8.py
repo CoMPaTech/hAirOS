@@ -13,14 +13,14 @@ logger = logging.getLogger(__name__)
 class AirOS8:
     """Set up connection to AirOS."""
 
-    def __init__(self, base_url: str, username: str, password: str):
+    def __init__(self, host: str, username: str, password: str):
         """Initialize AirOS8 class."""
         self.username = username
         self.password = password
-        self.base_url = base_url
+        self.base_url = f"https://{host}"
 
-        self._login_url = f"{base_url}/api/auth"  # AirOS 8
-        self._status_cgi_url = f"{base_url}/status.cgi"  # AirOS 8
+        self._login_url = f"{self.base_url}/api/auth"  # AirOS 8
+        self._status_cgi_url = f"{self.base_url}/status.cgi"  # AirOS 8
 
         self._use_json_for_login_post = False
 

@@ -1,7 +1,5 @@
 """Ubiquiti AirOS platform for Home Assistant Core."""
 
-from datetime import timedelta
-
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
@@ -11,8 +9,6 @@ from homeassistant.helpers import device_registry as dr
 from .airos8 import AirOS8
 from .const import DOMAIN, LOGGER
 from .coordinator import AirOSDataUpdateCoordinator
-
-SCAN_INTERVAL = timedelta(minutes=1)
 
 PLATFORMS: list[Platform] = [
     Platform.BINARY_SENSOR,
@@ -27,13 +23,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     # Fetch configuration data from config_flow
     username = entry.data[CONF_USERNAME]
     password = entry.data[CONF_PASSWORD]
-    base_url = entry.data[CONF_HOST]
+    host = entry.data[CONF_HOST]
 
     airdevice = None
 
     try:
         LOGGER.debug("Attempting to instantiate AirOS8 client.")
-        airdevice = AirOS8(base_url, username, password)
+        airdevice = AirOS8(host, username, password)
 
         device_data = await airdevice.interact_with_ubiquiti_device()
         LOGGER.debug("Interaction with Ubiquiti device successful.")
@@ -41,13 +37,23 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     except Exception as ex:
         # This will now catch errors from both AirOS8.__init__ and interact_with_ubiquiti_device()
         # The 'exc_info=True' is crucial for getting the full traceback.
-        LOGGER.exception("Error during AirOS8 initialization or communication for %s.", base_url)
+        LOGGER.exception("Error during AirOS8 initialization or communication for %s.", host)
         raise ConfigEntryNotReady("Error while communicating to AirOS API") from ex
 
-    host_data = device_data.get("host")
-    device_id = host_data.get("device_id")
-    hostname = host_data.get("hostname")
-    devmodel = host_data.get("devmodel")
+    host_data = device_data.get("host",{})
+    interfaces_data = device_data.get("interfaces", [])
+    device_id = host_data.get("device_id", host_data.get("hostname", host))
+    hostname = host_data.get("hostname", host)
+    devmodel = host_data.get("devmodel", "Unknown")
+
+    mac_address: str | None = None
+    # Iterate through interfaces to find eth0 and its MAC address
+    for interface in interfaces_data:
+       if interface.get("ifname") == "eth0":
+          mac_address = interface.get("hwaddr")
+          if mac_address:
+              break
+
 
     if "device_id" not in entry.data:
         new_data = {
@@ -63,7 +69,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.config_entries.async_update_entry(entry, unique_id=f"airos-{device_id}")
 
     # Set up coordinator for fetching data
-    coordinator = AirOSDataUpdateCoordinator(hass, airdevice, SCAN_INTERVAL)  # type: ignore[arg-type]
+    coordinator = AirOSDataUpdateCoordinator(hass, airdevice)  # type: ignore[arg-type]
     await coordinator.async_config_entry_first_refresh()
 
     # Store coordinator for use in platforms
@@ -73,9 +79,11 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     device_registry = dr.async_get(hass)
     device = device_registry.async_get_or_create(
         config_entry_id=entry.entry_id,
-        identifiers={(DOMAIN, str(device_id))},
-        manufacturer="Ubiquity",
         name=hostname,
+        identifiers={(DOMAIN, str(device_id))},
+        connections={(dr.CONNECTION_NETWORK_MAC, mac_address)},
+        manufacturer="Ubiquity",
+        sw_version=host_data.get("fwversion", "Unknown"),
         model=devmodel,
     )
 
