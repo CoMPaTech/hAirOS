@@ -1,0 +1,10 @@
+tmp/
+test.py
+__pycache__
+.vscode
+ha-core
+venv
+clean
+*.sedbck
+*.swp
+.DS_store

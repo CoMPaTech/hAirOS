@@ -1,0 +1,164 @@
+"""AirOS Sensor component for Home Assistant."""
+from __future__ import annotations
+
+from collections.abc import Callable
+from dataclasses import dataclass
+from typing import Any
+
+from homeassistant.components.sensor import (
+    SensorDeviceClass,
+    SensorEntity,
+    SensorEntityDescription,
+    SensorStateClass,
+)
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.const import (
+    PERCENTAGE,
+    SIGNAL_STRENGTH_DECIBELS,
+    UnitOfDataRate,
+    UnitOfFrequency,
+)
+from homeassistant.core import HomeAssistant
+from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.typing import StateType
+
+from .const import DOMAIN
+from .coordinator import AirOSDataUpdateCoordinator
+from .entity import AirOSEntity
+
+
+@dataclass(frozen=True, kw_only=True)
+class AirOSSensorEntityDescription(SensorEntityDescription):  # type: ignore[misc]
+    """Describe an AirOS sensor."""
+
+    value_fn: Callable[[dict[str, Any]], StateType | None]
+
+
+SENSORS: tuple[AirOSSensorEntityDescription, ...] = (
+    AirOSSensorEntityDescription(
+        key="host_cpuload",
+        translation_key="host_cpuload",
+        native_unit_of_measurement=PERCENTAGE,
+        device_class=None,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda data: data.get("host",{}).get("cpuload"),
+    ),
+    AirOSSensorEntityDescription(
+        key="host_netrole",
+        translation_key="host_netrole",
+        native_unit_of_measurement=None,
+        device_class=None,
+        state_class=None,
+        value_fn=lambda data: data.get("host",{}).get("netrole"),
+    ),
+    AirOSSensorEntityDescription(
+        key="wireless_frequency",
+        translation_key="wireless_frequency",
+        native_unit_of_measurement=UnitOfFrequency.MEGAHERTZ,
+        device_class=SensorDeviceClass.FREQUENCY,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda data: data.get("wireless",{}).get("frequency"),
+    ),
+    AirOSSensorEntityDescription(
+        key="wireless_essid",
+        translation_key="wireless_essid",
+        native_unit_of_measurement=None,
+        device_class=None,
+        state_class=None,
+        value_fn=lambda data: data.get("wireless",{}).get("essid"),
+    ),
+    AirOSSensorEntityDescription(
+        key="wireless_mode",
+        translation_key="wireless_mode",
+        native_unit_of_measurement=None,
+        device_class=None,
+        state_class=None,
+        value_fn=lambda data: data.get("wireless",{}).get("mode"),
+    ),
+    AirOSSensorEntityDescription(
+        key="wireless_antenna_gain",
+        translation_key="wireless_antenna_gain",
+        native_unit_of_measurement=SIGNAL_STRENGTH_DECIBELS,
+        device_class=SensorDeviceClass.SIGNAL_STRENGTH,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda data: data.get("wireless",{}).get("antenna_gain"),
+    ),
+    AirOSSensorEntityDescription(
+        key="wireless_throughput_tx",
+        translation_key="wireless_throughput_tx",
+        native_unit_of_measurement=UnitOfDataRate.KILOBITS_PER_SECOND,
+        device_class=SensorDeviceClass.DATA_RATE,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda data: data.get("wireless",{}).get("throughput",{}).get("tx"),
+    ),
+    AirOSSensorEntityDescription(
+        key="wireless_throughput_rx",
+        translation_key="wireless_throughput_rx",
+        native_unit_of_measurement=UnitOfDataRate.KILOBITS_PER_SECOND,
+        device_class=SensorDeviceClass.DATA_RATE,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda data: data.get("wireless",{}).get("throughput",{}).get("rx"),
+    ),
+    AirOSSensorEntityDescription(
+        key="wireless_polling_dl_capacity",
+        translation_key="wireless_polling_dl_capacity",
+        native_unit_of_measurement=UnitOfDataRate.KILOBITS_PER_SECOND,
+        device_class=SensorDeviceClass.DATA_RATE,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda data: data.get("wireless",{}).get("polling",{}).get("dl_capacity"),
+    ),
+    AirOSSensorEntityDescription(
+        key="wireless_polling_ul_capacity",
+        translation_key="wireless_polling_ul_capacity",
+        native_unit_of_measurement=UnitOfDataRate.KILOBITS_PER_SECOND,
+        device_class=SensorDeviceClass.DATA_RATE,
+        state_class=SensorStateClass.MEASUREMENT,
+        value_fn=lambda data: data.get("wireless",{}).get("polling",{}).get("ul_capacity"),
+    ),
+    AirOSSensorEntityDescription(
+        key="wireless_remote_hostname",
+        translation_key="wireless_remote_hostname",
+        native_unit_of_measurement=None,
+        device_class=None,
+        state_class=None,
+        value_fn=lambda data: data.get("wireless",{}).get("sta",{})[0].get("remote",{}).get("hostname"),
+    ),
+)
+
+
+async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: AddEntitiesCallback) -> None:
+    """Set up the AirOS sensors from a config entry."""
+    coordinator = hass.data[DOMAIN][config_entry.entry_id]
+
+    entities = []
+    for description in SENSORS:
+        entities.append(AirOSSensor(coordinator, description))
+
+    async_add_entities(entities, update_before_add=False)
+
+
+class AirOSSensor(AirOSEntity, SensorEntity):  # type: ignore[misc]
+    """Representation of a Sensor."""
+
+    _attr_has_entity_name = True
+
+    entity_description = AirOSSensorEntityDescription
+
+    def __init__(
+        self,
+        coordinator: AirOSDataUpdateCoordinator,
+        description: AirOSSensorEntityDescription,
+    ):
+        """Initialize the sensor."""
+        super().__init__(coordinator)
+        self._coordinator = coordinator
+
+        self.entity_description = description
+        self._attr_unique_id = f"{coordinator.data.device_id}_{description.key}"
+
+
+    @property
+    def native_value(self) -> Any:
+        """Return the state of the sensor."""
+        return self.entity_description.value_fn(self._coordinator.data.device_data)
+

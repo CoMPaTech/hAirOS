@@ -1,0 +1,90 @@
+{
+  "config": {
+    "flow_title": "AirOS device",
+    "step": {
+      "user": {
+        "description": "Provide your AirOS device details",
+        "data": {
+          "password": "Password",
+          "username": "Username",
+          "base_url": "URL of your device (https://192.168.178.2)"
+        }
+      }
+    },
+    "error": {
+      "already_configured": "This device is already configured",
+      "invalid_auth": "Invalid authentication, check your password or Base URL",
+      "cannot_connect": "Cannot connect",
+      "unknown": "Unknown error!"
+    },
+    "abort": {
+      "already_configured": "This device is already configured"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "host_cpuload": {
+        "name": "CPU load"
+      },
+      "host_netrole": {
+        "name": "Network Role"
+      },
+      "wireless_frequency": {
+        "name": "Wireless Frequency"
+      },
+      "wireless_essid": {
+        "name": "Wireless SSID"
+      },
+      "wireless_mode": {
+        "name": "Wireless Mode"
+      },
+      "wireless_antenna_gain": {
+        "name": "Antenna Gain"
+      },
+      "wireless_throughput_tx": {
+        "name": "Throughput Transmit (actual)"
+      },
+      "wireless_throughput_rx": {
+        "name": "Throughput Receive (actual)"
+      },
+      "wireless_polling_dl_capacity": {
+        "name": "Download capacity"
+      },
+      "wireless_polling_ul_capacity": {
+        "name": "Upload capacity"
+      },
+      "wireless_remote_hostname": {
+        "name": "Remote Hostname"
+      }
+    },
+    "binary_sensor": {
+      "port_forwarding": {
+        "name": "Port forwarding active"
+      },
+      "dhcp_client": {
+        "name": "DHCP client"
+      },
+      "dhcp_server": {
+        "name": "DHCP server"
+      },
+      "dhcp6_server": {
+        "name": "DHCPv6 server"
+      },
+      "pppoe": {
+        "name": "PPPoE"
+      },
+      "firewall_iptables": {
+        "name": "IPtables based Firewall"
+      },
+      "firewall_ip6tables": {
+        "name": "IPtables v6 based Firewall"
+      },
+      "firewall_ebtables": {
+        "name": "EBtables based Firewall"
+      },
+      "firewall_eb6tables": {
+        "name": "EBtables v6 based Firewall"
+      }
+    }
+  }
+}
