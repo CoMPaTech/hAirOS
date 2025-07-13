@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### JUL 2025 [0.0.3]
+
+- Split module
+
 ### JUL 2025 [0.0.2]
 
 - Improve handling and visualisation

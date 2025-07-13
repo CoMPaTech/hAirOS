@@ -1,12 +1,13 @@
 """Ubiquiti AirOS platform for Home Assistant Core."""
 
+from airos.airos8 import AirOS8
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import device_registry as dr
 
-from .airos8 import AirOS8
 from .const import DOMAIN, LOGGER, SCAN_INTERVAL
 from .coordinator import AirOSDataUpdateCoordinator
 

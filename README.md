@@ -1,6 +1,6 @@
 # Ubiquity AirOS Custom Component for Home Assistant
 
-**:warning::warning::warning:Read the [release notes](https://github.com/CoMPaTech/hAirOS/releases) before upgrading, in case there are BREAKING changes!:warning::warning::warning:**
+**:warning::warning::warning:Read the [release notes](https://github.com/CoMPaTech/hAirOS/releases) before upgrading, in case there are BREAKING changes! :warning: :warning: :warning:**
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/CoMPaTech/hAirOS/)
 [![CodeFactor](https://www.codefactor.io/repository/github/CoMPaTech/hAirOS/badge)](https://www.codefactor.io/repository/github/CoMPaTech/hAirOS)
