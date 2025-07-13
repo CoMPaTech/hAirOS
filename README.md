@@ -1,4 +1,4 @@
-# Ubiquity AirOS Custom Component for Home Assistant
+# Ubiquiti AirOS Custom Component for Home Assistant
 
 **:warning::warning::warning:Read the [release notes](https://github.com/CoMPaTech/hAirOS/releases) before upgrading, in case there are BREAKING changes! :warning: :warning: :warning:**
 
@@ -46,7 +46,7 @@ For each device you will have to add it as an integration.
 - [ ] In Home Assistant click on `Configuration`
 - [ ] Click on `Integrations`
 - [ ] Hit the `+` button in the right lower corner
-- [ ] Search or browse for 'Ubiquity AirOS' and click it
+- [ ] Search or browse for 'Ubiquiti AirOS' and click it
 - [ ] Enter your details
 
 ### Is it tested?

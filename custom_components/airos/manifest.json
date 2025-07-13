@@ -1,6 +1,6 @@
 {
   "domain": "airos",
-  "name": "Ubiquity AirOS",
+  "name": "Ubiquiti AirOS",
   "codeowners": ["@CoMPaTech"],
   "config_flow": true,
   "documentation": "https://github.com/CoMPaTech/airos",

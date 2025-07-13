@@ -83,7 +83,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         name=hostname,
         identifiers={(DOMAIN, str(device_id))},
         connections={(dr.CONNECTION_NETWORK_MAC, mac_address)},
-        manufacturer="Ubiquity",
+        manufacturer="Ubiquiti",
         sw_version=host_data.get("fwversion", "Unknown"),
         model=devmodel,
     )
