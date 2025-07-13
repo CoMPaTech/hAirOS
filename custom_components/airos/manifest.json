@@ -1,12 +1,12 @@
 {
   "domain": "airos",
-  "name": "Ubiquity AirOS",
+  "name": "Ubiquiti AirOS",
   "codeowners": ["@CoMPaTech"],
   "config_flow": true,
   "documentation": "https://github.com/CoMPaTech/airos",
   "integration_type": "device",
   "iot_class": "local_polling",
   "issue_tracker": "https://github.com/CoMPaTech/airos/issues",
-  "requirements": [],
+  "requirements": ["airos==0.0.3a2"],
   "version": "0.0.1"
 }

@@ -1,11 +1,11 @@
 [project]
 name = "airos-beta"
 version = "0.0.2"
-description = "Ubiquity AirOS beta custom-component"
+description = "Ubiquiti AirOS beta custom-component"
 readme = "README.md"
 requires-python = ">=3.13"
 license = "MIT"
-keywords = ["ubiquity", "uisp", "airos"]
+keywords = ["ubiquiti", "uisp", "airos"]
 authors = [
     {name = "@compatech"},
     {email = "info@compa.nl"},
@@ -21,7 +21,7 @@ classifiers = [
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3.13",
   "Topic :: Home Automation",]
-dependencies = ["homeassistant"]
+dependencies = ["homeassistant","airos"]
 
 [project.urls]
 "Source Code" = "https://github.com/compatech/hAirOS"

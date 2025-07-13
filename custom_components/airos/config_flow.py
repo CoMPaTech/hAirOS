@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from airos.airos8 import AirOS8
 import voluptuous as vol
 
 from homeassistant import config_entries
@@ -11,7 +12,6 @@ from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 
-from .airos8 import AirOS8
 from .const import DOMAIN, LOGGER
 
 STEP_USER_DATA_SCHEMA = vol.Schema(

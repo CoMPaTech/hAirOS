@@ -1,12 +1,13 @@
 """Ubiquiti AirOS platform for Home Assistant Core."""
 
+from airos.airos8 import AirOS8
+
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME, Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import device_registry as dr
 
-from .airos8 import AirOS8
 from .const import DOMAIN, LOGGER, SCAN_INTERVAL
 from .coordinator import AirOSDataUpdateCoordinator
 
@@ -82,7 +83,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         name=hostname,
         identifiers={(DOMAIN, str(device_id))},
         connections={(dr.CONNECTION_NETWORK_MAC, mac_address)},
-        manufacturer="Ubiquity",
+        manufacturer="Ubiquiti",
         sw_version=host_data.get("fwversion", "Unknown"),
         model=devmodel,
     )

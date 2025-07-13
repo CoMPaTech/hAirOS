@@ -30,7 +30,7 @@ class AirOSEntity(CoordinatorEntity[AirOSData]):  # type:ignore [misc]
         self._attr_device_info = DeviceInfo(
             configuration_url=configuration_url,
             identifiers={(DOMAIN, str(coordinator.data.device_id))},
-            manufacturer="Ubiquity",
+            manufacturer="Ubiquiti",
             model=host_data.get("devmodel"),
             name=host_data.get("hostname"),
             sw_version=host_data.get("fwversion"),

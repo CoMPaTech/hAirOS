@@ -1,6 +1,6 @@
-# Ubiquity AirOS Custom Component for Home Assistant
+# Ubiquiti AirOS Custom Component for Home Assistant
 
-**:warning::warning::warning:Read the [release notes](https://github.com/CoMPaTech/hAirOS/releases) before upgrading, in case there are BREAKING changes!:warning::warning::warning:**
+**:warning::warning::warning:Read the [release notes](https://github.com/CoMPaTech/hAirOS/releases) before upgrading, in case there are BREAKING changes! :warning: :warning: :warning:**
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/CoMPaTech/hAirOS/)
 [![CodeFactor](https://www.codefactor.io/repository/github/CoMPaTech/hAirOS/badge)](https://www.codefactor.io/repository/github/CoMPaTech/hAirOS)
@@ -14,7 +14,10 @@
 
 ## Requirements
 
-Only tested with LOCO5ACs on AirOs 8 at time of writing
+Only tested/confirmed with AirOS 8 on:
+
+- [x] Nanostation 5AC (LOCO5AC) by @CoMPaTech
+- [x] PowerBeam 5AC gen2 by @exico91
 
 ## Installation
 
@@ -46,7 +49,7 @@ For each device you will have to add it as an integration.
 - [ ] In Home Assistant click on `Configuration`
 - [ ] Click on `Integrations`
 - [ ] Hit the `+` button in the right lower corner
-- [ ] Search or browse for 'Ubiquity AirOS' and click it
+- [ ] Search or browse for 'Ubiquiti AirOS' and click it
 - [ ] Enter your details
 
 ### Is it tested?

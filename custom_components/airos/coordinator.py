@@ -1,11 +1,12 @@
 """DataUpdateCoordinator for AirOS."""
 from typing import Any, NamedTuple
 
+from airos.airos8 import AirOS8
+
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
 from homeassistant.helpers.update_coordinator import DataUpdateCoordinator
 
-from .airos8 import AirOS8
 from .const import DOMAIN, LOGGER, SCAN_INTERVAL
 
 
