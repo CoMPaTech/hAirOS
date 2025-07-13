@@ -2,7 +2,7 @@
 
 ## Changelog
 
-### JUL 2025 [0.0.3]
+### JUL 2025 [0.0.4]
 
 - Split module
 
