@@ -49,10 +49,11 @@ async def validate_input(_: HomeAssistant, data: dict[str, Any]) -> dict:
         raise InvalidAuth # Fallback error
 
     LOGGER.error("validate_input: Attempting to interact with Ubiquiti device...")
-    device_data = await airdevice.interact_with_ubiquiti_device()
+    await airdevice.login()
+    device_data = await airdevice.status()
 
     if not device_data:
-        LOGGER.error("validate_input: No device data returned from interact_with_ubiquiti_device.")
+        LOGGER.error("validate_input: No device data returned from AirOS status.")
         raise InvalidAuth
 
     LOGGER.error("validate_input: Credentials validated successfully. Returned device data: %s", device_data)

@@ -29,7 +29,8 @@ class AirOSDataUpdateCoordinator(DataUpdateCoordinator[AirOSData]):  # type: ign
     async def _async_update_data(self) -> AirOSData:
         """Fetch data from AirOS."""
         try:
-            api_response = await self.airdevice.interact_with_ubiquiti_device()
+            await self.airdevice.login()
+            api_response = await self.airdevice.status()
 
             host_data = api_response.get("host")
             device_id = host_data.get("device_id")

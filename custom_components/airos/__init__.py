@@ -32,11 +32,12 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         LOGGER.debug("Attempting to instantiate AirOS8 client.")
         airdevice = AirOS8(host, username, password)
 
-        device_data = await airdevice.interact_with_ubiquiti_device()
+        await airdevice.login()
+        device_data = await airdevice.status()
         LOGGER.debug("Interaction with Ubiquiti device successful.")
 
     except Exception as ex:
-        # This will now catch errors from both AirOS8.__init__ and interact_with_ubiquiti_device()
+        # This will now catch errors from both AirOS8.__init__ and login() and status()
         # The 'exc_info=True' is crucial for getting the full traceback.
         LOGGER.exception("Error during AirOS8 initialization or communication for %s.", host)
         raise ConfigEntryNotReady("Error while communicating to AirOS API") from ex
