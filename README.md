@@ -14,7 +14,10 @@
 
 ## Requirements
 
-Only tested with LOCO5ACs on AirOs 8 at time of writing
+Only tested/confirmed with AirOS 8 on:
+
+- [x] Nanostation 5AC (LOCO5AC) by @CoMPaTech
+- [x] PowerBeam 5AC gen2 by @exico91
 
 ## Installation
 
