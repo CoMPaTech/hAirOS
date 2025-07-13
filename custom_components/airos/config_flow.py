@@ -11,6 +11,7 @@ from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN, LOGGER
 
@@ -23,17 +24,21 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 )
 
 
-async def validate_input(_: HomeAssistant, data: dict[str, Any]) -> dict:
+async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict:
     """Validate the user input."""
     username = data[CONF_USERNAME]
     password = data[CONF_PASSWORD]
     base_url = data[CONF_HOST]
 
+    session = async_get_clientsession(hass)
+    # Future ref entry.data.get(CONF_VERIFY_SSL, False)
+    verify_ssl = False
+
     airdevice = None
 
     try:
         LOGGER.debug("validate_input: Attempting to instantiate AirOS8 client with base_url='%s'...", base_url)
-        airdevice = AirOS8(base_url, username, password)
+        airdevice = AirOS8(base_url, username, password, session, verify_ssl)
         LOGGER.debug("validate_input: AirOS8 client instantiated successfully.")
     except Exception as e:
         # This block will catch *any* exception raised by AirOS8.__init__

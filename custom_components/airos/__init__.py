@@ -7,6 +7,7 @@ from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME, Platfor
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers import device_registry as dr
+from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .const import DOMAIN, LOGGER, SCAN_INTERVAL
 from .coordinator import AirOSDataUpdateCoordinator
@@ -26,11 +27,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     password = entry.data[CONF_PASSWORD]
     host = entry.data[CONF_HOST]
 
+    session = async_get_clientsession(hass)
+    verify_ssl = False
+
     airdevice = None
 
     try:
         LOGGER.debug("Attempting to instantiate AirOS8 client.")
-        airdevice = AirOS8(host, username, password)
+        airdevice = AirOS8(host, username, password, session, verify_ssl)
 
         await airdevice.login()
         device_data = await airdevice.status()
