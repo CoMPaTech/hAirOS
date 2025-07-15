@@ -19,7 +19,7 @@ from homeassistant.const import (
     UnitOfFrequency,
 )
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.typing import StateType
 
 from .const import DOMAIN
@@ -127,7 +127,7 @@ SENSORS: tuple[AirOSSensorEntityDescription, ...] = (
 )
 
 
-async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: AddEntitiesCallback) -> None:
+async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: AddConfigEntryEntitiesCallback) -> None:
     """Set up the AirOS sensors from a config entry."""
     coordinator = hass.data[DOMAIN][config_entry.entry_id]
 

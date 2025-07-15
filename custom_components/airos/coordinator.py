@@ -1,7 +1,7 @@
 """DataUpdateCoordinator for AirOS."""
 from typing import Any, NamedTuple
 
-from airos.airos8 import AirOS8
+from airos.airos8 import AirOS
 
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryAuthFailed
@@ -21,7 +21,7 @@ class AirOSData(NamedTuple):
 class AirOSDataUpdateCoordinator(DataUpdateCoordinator[AirOSData]):  # type: ignore[misc]
     """Class to manage fetching AirOS data from single endpoint."""
 
-    def __init__(self, hass: HomeAssistant, airdevice: AirOS8, interval: float) -> None:
+    def __init__(self, hass: HomeAssistant, airdevice: AirOS, interval: float) -> None:
         """Initialize the coordinator."""
         super().__init__(hass, LOGGER, name=DOMAIN, update_interval=SCAN_INTERVAL)
         self.airdevice = airdevice

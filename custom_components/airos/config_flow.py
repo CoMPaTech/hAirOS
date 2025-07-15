@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from airos.airos8 import AirOS8
+from airos.airos8 import AirOS
 import voluptuous as vol
 
 from homeassistant import config_entries
@@ -37,28 +37,28 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict:
     airdevice = None
 
     try:
-        LOGGER.debug("validate_input: Attempting to instantiate AirOS8 client with base_url='%s'...", base_url)
-        airdevice = AirOS8(base_url, username, password, session, verify_ssl)
-        LOGGER.debug("validate_input: AirOS8 client instantiated successfully.")
+        LOGGER.debug("validate_input: Attempting to instantiate AirOS client with base_url='%s'", base_url)
+        airdevice = AirOS(base_url, username, password, session, verify_ssl)
+        LOGGER.debug("validate_input: AirOS client instantiated successfully")
     except Exception as e:
-        # This block will catch *any* exception raised by AirOS8.__init__
+        # This block will catch *any* exception raised by AirOS.__init__
         # The 'exc_info=True' will print the full traceback to your Home Assistant logs.
-        LOGGER.exception("validate_input: Failed to instantiate AirOS8 client. Review traceback below for details.")
+        LOGGER.exception("validate_input: Failed to instantiate AirOS client. Review traceback below for details")
         # Re-raise as a Home Assistant specific exception
         raise CannotConnect from e # Assuming an instantiation error is a connection issue
 
 
     # If we reached here, airdevice should be defined.
     if airdevice is None: # Double-check, should not happen with the try-except
-        LOGGER.error("validate_input: airdevice is unexpectedly None after instantiation attempt.")
+        LOGGER.error("validate_input: airdevice is unexpectedly None after instantiation attempt")
         raise InvalidAuth # Fallback error
 
-    LOGGER.error("validate_input: Attempting to interact with Ubiquiti device...")
+    LOGGER.error("validate_input: Attempting to interact with Ubiquiti device")
     await airdevice.login()
     device_data = await airdevice.status()
 
     if not device_data:
-        LOGGER.error("validate_input: No device data returned from AirOS status.")
+        LOGGER.error("validate_input: No device data returned from AirOS status")
         raise InvalidAuth
 
     LOGGER.error("validate_input: Credentials validated successfully. Returned device data: %s", device_data)
