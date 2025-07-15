@@ -1,6 +1,6 @@
 """Ubiquiti AirOS platform for Home Assistant Core."""
 
-from airos.airos8 import AirOS8
+from airos.airos8 import AirOS
 
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME, Platform
@@ -27,23 +27,22 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     password = entry.data[CONF_PASSWORD]
     host = entry.data[CONF_HOST]
 
-    session = async_get_clientsession(hass)
-    verify_ssl = False
+    session = async_get_clientsession(hass, verify_ssl=False)
 
     airdevice = None
 
     try:
-        LOGGER.debug("Attempting to instantiate AirOS8 client.")
-        airdevice = AirOS8(host, username, password, session, verify_ssl)
+        LOGGER.debug("Attempting to instantiate AirOS client")
+        airdevice = AirOS(host, username, password, session)
 
         await airdevice.login()
         device_data = await airdevice.status()
-        LOGGER.debug("Interaction with Ubiquiti device successful.")
+        LOGGER.debug("Interaction with Ubiquiti device successful")
 
     except Exception as ex:
-        # This will now catch errors from both AirOS8.__init__ and login() and status()
+        # This will now catch errors from both AirOS.__init__ and login() and status()
         # The 'exc_info=True' is crucial for getting the full traceback.
-        LOGGER.exception("Error during AirOS8 initialization or communication for %s.", host)
+        LOGGER.exception("Error during AirOS initialization or communication for %s", host)
         raise ConfigEntryNotReady("Error while communicating to AirOS API") from ex
 
     host_data = device_data.get("host",{})
