@@ -28,7 +28,7 @@ class AirOSEntity(CoordinatorEntity[AirOSData]):  # type:ignore [misc]
 
         configuration_url: str | None = None
         if entry := self.coordinator.config_entry:
-            configuration_url = f"http://{entry.data[CONF_HOST]}"
+            configuration_url = f"https://{entry.data[CONF_HOST]}"
 
         self._attr_device_info = DeviceInfo(
             configuration_url=configuration_url,
