@@ -27,14 +27,13 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     password = entry.data[CONF_PASSWORD]
     host = entry.data[CONF_HOST]
 
-    session = async_get_clientsession(hass)
-    verify_ssl = False
+    session = async_get_clientsession(hass, verify_ssl=False)
 
     airdevice = None
 
     try:
         LOGGER.debug("Attempting to instantiate AirOS client")
-        airdevice = AirOS(host, username, password, session, verify_ssl)
+        airdevice = AirOS(host, username, password, session)
 
         await airdevice.login()
         device_data = await airdevice.status()

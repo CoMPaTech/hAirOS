@@ -30,15 +30,14 @@ async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict:
     password = data[CONF_PASSWORD]
     base_url = data[CONF_HOST]
 
-    session = async_get_clientsession(hass)
+    session = async_get_clientsession(hass, verify_ssl=False)
     # Future ref entry.data.get(CONF_VERIFY_SSL, False)
-    verify_ssl = False
 
     airdevice = None
 
     try:
         LOGGER.debug("validate_input: Attempting to instantiate AirOS client with base_url='%s'", base_url)
-        airdevice = AirOS(base_url, username, password, session, verify_ssl)
+        airdevice = AirOS(base_url, username, password, session)
         LOGGER.debug("validate_input: AirOS client instantiated successfully")
     except Exception as e:
         # This block will catch *any* exception raised by AirOS.__init__
