@@ -2,9 +2,9 @@
 
 ## Changelog
 
-### JUL 2025 [0.0.5]
+### JUL 2025 [0.0.7]
 
-- Update module to 0.0.5
+- Update module to 0.0.7 - adding testing and 'visit device' link
 
 ### JUL 2025 [0.0.4]
 
