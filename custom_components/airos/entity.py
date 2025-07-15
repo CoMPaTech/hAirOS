@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from typing import Any
 
+from homeassistant.const import CONF_HOST
 from homeassistant.helpers.entity import DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
@@ -22,10 +23,12 @@ class AirOSEntity(CoordinatorEntity[AirOSData]):  # type:ignore [misc]
         """Initialise the gateway."""
         super().__init__(coordinator)
 
-        configuration_url: str | None = None
-
         data = coordinator.data.device_data
         host_data=data.get("host")
+
+        configuration_url: str | None = None
+        if entry := self.coordinator.config_entry:
+            configuration_url = f"http://{entry.data[CONF_HOST]}"
 
         self._attr_device_info = DeviceInfo(
             configuration_url=configuration_url,
