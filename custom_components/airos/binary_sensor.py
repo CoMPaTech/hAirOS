@@ -129,7 +129,7 @@ async def async_setup_entry(
     # Determine remote stations
     if "sta" in wireless_data:
         for client_data in wireless_data["sta"]:
-            entities.extend(AirOSClientBinarySensor(coordinator, client_data, wireless_data["sta"]))
+            entities.append(AirOSClientBinarySensor(coordinator, client_data, wireless_data["sta"]))
 
     async_add_entities(entities, update_before_add=False)
 

@@ -31,13 +31,13 @@ async def async_setup_entry(
 ) -> None:
     """Set up the AirOS button from a config entry."""
     coordinator = config_entry.runtime_data
-    entities: list[AirOSClientButton] = []
+    entities = []
 
     wireless_data = coordinator.data.device_data.get("wireless", {})
 
     if "sta" in wireless_data:
         for client_data in wireless_data["sta"]:
-            entities.extend(AirOSClientButton(coordinator, client_data))
+            entities.append(AirOSClientButton(coordinator, client_data))
 
     async_add_entities(entities, update_before_add=False)
 
