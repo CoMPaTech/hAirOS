@@ -1,19 +1,28 @@
-"""Config flow for AirOS integration."""
+"""Config flow for the Ubiquiti airOS integration."""
+
 from __future__ import annotations
 
+import logging
 from typing import Any
 
 from airos.airos8 import AirOS
+from airos.exceptions import (
+    ConnectionAuthenticationError,
+    ConnectionSetupError,
+    DataMissingError,
+    DeviceConnectionError,
+)
 import voluptuous as vol
 
-from homeassistant import config_entries
+from homeassistant.config_entries import ConfigFlow, ConfigFlowResult
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
-from homeassistant.data_entry_flow import FlowResult
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .const import DOMAIN, LOGGER
+from .const import DOMAIN
+
+_LOGGER = logging.getLogger(__name__)
 
 STEP_USER_DATA_SCHEMA = vol.Schema(
     {
@@ -24,93 +33,86 @@ STEP_USER_DATA_SCHEMA = vol.Schema(
 )
 
 
-async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict:
-    """Validate the user input."""
-    username = data[CONF_USERNAME]
-    password = data[CONF_PASSWORD]
-    base_url = data[CONF_HOST]
+async def validate_input(hass: HomeAssistant, data: dict[str, Any]) -> dict[str, Any]:
+    """Validate the user input allows us to connect."""
 
     session = async_get_clientsession(hass, verify_ssl=False)
-    # Future ref entry.data.get(CONF_VERIFY_SSL, False)
-
-    airdevice = None
+    airos_device = AirOS(
+        host=data[CONF_HOST],
+        username=data[CONF_USERNAME],
+        password=data[CONF_PASSWORD],
+        session=session,
+    )
 
     try:
-        LOGGER.debug("validate_input: Attempting to instantiate AirOS client with base_url='%s'", base_url)
-        airdevice = AirOS(base_url, username, password, session)
-        LOGGER.debug("validate_input: AirOS client instantiated successfully")
-    except Exception as e:
-        # This block will catch *any* exception raised by AirOS.__init__
-        # The 'exc_info=True' will print the full traceback to your Home Assistant logs.
-        LOGGER.exception("validate_input: Failed to instantiate AirOS client. Review traceback below for details")
-        # Re-raise as a Home Assistant specific exception
-        raise CannotConnect from e # Assuming an instantiation error is a connection issue
+        await airos_device.login()
+        status = await airos_device.status()
 
+        host_data: dict = status["host"]
+        device_id: str = host_data["device_id"]
+        hostname: str = host_data.get("hostname", "Ubiquiti airOS Device")
 
-    # If we reached here, airdevice should be defined.
-    if airdevice is None: # Double-check, should not happen with the try-except
-        LOGGER.error("validate_input: airdevice is unexpectedly None after instantiation attempt")
-        raise InvalidAuth # Fallback error
-
-    LOGGER.error("validate_input: Attempting to interact with Ubiquiti device")
-    await airdevice.login()
-    device_data = await airdevice.status()
-
-    if not device_data:
-        LOGGER.error("validate_input: No device data returned from AirOS status")
-        raise InvalidAuth
-
-    LOGGER.error("validate_input: Credentials validated successfully. Returned device data: %s", device_data)
+        device_data: dict = {
+            "title": hostname,
+            "device_id": device_id,
+            "hostname": hostname,
+            "data": status,
+        }
+    except (
+        ConnectionSetupError,
+        DeviceConnectionError,
+    ) as e:
+        _LOGGER.error("Error connecting to airOS device: %s", e)
+        raise CannotConnect from e
+    except (
+        ConnectionAuthenticationError,
+        DataMissingError,
+    ) as e:
+        _LOGGER.error("Error authenticating with airOS device: %s", e)
+        raise InvalidAuth from e
+    except KeyError as e:
+        # Handle unexpected data structure and missing device-id
+        _LOGGER.error("Unexpected data returned by airOS device: %s", e)
+        raise KeyError from e
 
     return device_data
 
 
-class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):  # type: ignore[call-arg, misc]
-    """Handle a config flow for AirOS."""
+class AirOSConfigFlow(ConfigFlow, domain=DOMAIN):
+    """Handle a config flow for Ubiquiti airOS."""
 
     VERSION = 1
 
     async def async_step_user(
         self, user_input: dict[str, Any] | None = None
-    ) -> FlowResult:
+    ) -> ConfigFlowResult:
         """Handle the initial step."""
-        if user_input is None:
-            return self.async_show_form(
-                step_id="user", data_schema=STEP_USER_DATA_SCHEMA
-            )
-
-        errors = {}
-
-        try:
-            device_data = await validate_input(self.hass, user_input)
-            LOGGER.error(f"device data contains {device_data}")
-
-            host_data = device_data.get("host")
-            device_id = host_data.get("device_id")
-            hostname = host_data.get("hostname")
-
-            await self.async_set_unique_id(f"airos-{device_id}")
-            self._abort_if_unique_id_configured()
-
-            LOGGER.info(f"Creating entry using {hostname} as AirOS device name")
-            return self.async_create_entry(title=hostname, data=user_input)
-
-        except CannotConnect:
-            errors["base"] = "cannot_connect"
-        except InvalidAuth:
-            errors["base"] = "invalid_auth"
-        except Exception:  # pylint: disable=broad-except
-            LOGGER.exception("Unexpected exception")
-            errors["base"] = "unknown"
+        errors: dict[str, str] = {}
+        if user_input is not None:
+            try:
+                device_data = await validate_input(self.hass, user_input)
+            except CannotConnect:
+                errors["base"] = "cannot_connect"
+            except InvalidAuth:
+                errors["base"] = "invalid_auth"
+            except Exception:
+                _LOGGER.exception("Unexpected exception")
+                errors["base"] = "unknown"
+            else:
+                await self.async_set_unique_id(device_data.get("device_id"))
+                self._abort_if_unique_id_configured()
+                return self.async_create_entry(
+                    title=device_data.get("title", "Ubiquity airOS"), data=user_input
+                )
 
         return self.async_show_form(
             step_id="user", data_schema=STEP_USER_DATA_SCHEMA, errors=errors
         )
 
 
-class CannotConnect(HomeAssistantError):  # type: ignore[misc]
+class CannotConnect(HomeAssistantError):
     """Error to indicate we cannot connect."""
 
 
-class InvalidAuth(HomeAssistantError):  # type: ignore[misc]
+class InvalidAuth(HomeAssistantError):
     """Error to indicate there is invalid auth."""

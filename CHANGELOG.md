@@ -2,6 +2,14 @@
 
 ## Changelog
 
+### JUL 2025 [0.1.0]
+
+- Functional device reconnect and align with potential Core PR
+
+### JUL 2025 [0.0.8] and [0.0.9]
+
+- Introducing more and better exceptions
+
 ### JUL 2025 [0.0.7]
 
 - Update module to 0.0.7 - adding testing and 'visit device' link

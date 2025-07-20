@@ -8,3 +8,4 @@ clean
 *.sedbck
 *.swp
 .DS_store
+manual_clone_ha

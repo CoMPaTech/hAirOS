@@ -1,4 +1,4 @@
-# Ubiquiti AirOS Custom Component for Home Assistant
+# Ubiquiti airOS Custom Component for Home Assistant
 
 **:warning::warning::warning:Read the [release notes](https://github.com/CoMPaTech/hAirOS/releases) before upgrading, in case there are BREAKING changes! :warning: :warning: :warning:**
 
@@ -14,7 +14,7 @@
 
 ## Requirements
 
-Only tested/confirmed with AirOS 8 on:
+Only tested/confirmed with airOS 8 on:
 
 - [x] Nanostation 5AC (LOCO5AC) by @CoMPaTech
 - [x] PowerBeam 5AC gen2 by @exico91
@@ -25,11 +25,11 @@ Only tested/confirmed with AirOS 8 on:
 
 ## Configuration
 
-Configure this integration the usual way, requiring your username (`ubnt`), password and IP address of the AirOS device.
+Configure this integration the usual way, requiring your username (`ubnt`), password and IP address of the airOS device.
 
 ## What it provides
 
-In the current state it retrieves some information and should display the 'other device connected', connection mode, SSID and both actual data being transferred and the maximum capacity.
+In the current state it retrieves some information and should display the 'other device connected', connection mode, SSID and both actual data being transferred and the maximum capacity. These are displayed as `sensor`s or `binary_sensor`s though most `binary_sensor`s are disabled by default. Additionally for stations connected, child-devices are displayed with both a `binary_sensor` indicating connection and a `button` to force reconnect on the connected device (i.e. the same as the reconnect button on the default homepage of airOS
 
 ## State: BETA
 
@@ -40,7 +40,7 @@ Even though available does not mean it's stable yet, the HA part is solid but th
 - Use [HACS](https://hacs.xyz)
 - Navigate to the `Integrations` page and use the three-dots icon on the top right to add a custom repository.
 - Use the link to this page as the URL and select 'Integrations' as the category.
-- Look for `AirOS` in `Integrations` and install it!
+- Look for `airOS` in `Integrations` and install it!
 
 ### How to add the integration to HA Core
 
@@ -49,7 +49,7 @@ For each device you will have to add it as an integration.
 - [ ] In Home Assistant click on `Configuration`
 - [ ] Click on `Integrations`
 - [ ] Hit the `+` button in the right lower corner
-- [ ] Search or browse for 'Ubiquiti AirOS' and click it
+- [ ] Search or browse for 'Ubiquiti airOS' and click it
 - [ ] Enter your details
 
 ### Is it tested?
