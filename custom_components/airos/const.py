@@ -4,5 +4,7 @@ from datetime import timedelta
 
 DOMAIN = "airos"
 
+MANUFACTURER = "Ubiquiti"
+
 SCAN_INTERVAL = timedelta(minutes=1)
 
