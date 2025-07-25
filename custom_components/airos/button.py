@@ -14,7 +14,7 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 
 from .coordinator import AirOSDataUpdateCoordinator
 from .entity import AirOSEntity
-from .helpers import get_client_device_info, get_client_mac
+from .helpers import get_client_device_info
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -33,11 +33,7 @@ async def async_setup_entry(
     coordinator = config_entry.runtime_data
     entities = []
 
-    wireless_data = coordinator.data.device_data.get("wireless", {})
-
-    if "sta" in wireless_data:
-        for client_data in wireless_data["sta"]:
-            entities.append(AirOSClientButton(coordinator, client_data))
+    entities=[AirOSClientButton(coordinator, client_data) for client_data in coordinator.data.wireless.sta]
 
     async_add_entities(entities, update_before_add=False)
 
@@ -57,7 +53,7 @@ class AirOSClientButton(AirOSEntity, ButtonEntity):
         self.coordinator = coordinator
         self.entity_description = BUTTON_DESCRIPTION
 
-        self.mac_lower = get_client_mac(self._client_data)
+        self.mac_lower = client_data.mac.replace(":", "").lower()
         self._attr_unique_id = f"{coordinator.config_entry.unique_id}_{self.mac_lower}_restart_connection"
 
         self._attr_device_info = get_client_device_info(coordinator.config_entry.unique_id, self._client_data)
@@ -66,7 +62,7 @@ class AirOSClientButton(AirOSEntity, ButtonEntity):
 
     async def async_press(self) -> None:
         """Handle the button press to force restart the client connection."""
-        mac_address = self._client_data.get("mac")
+        mac_address = self._client_data.mac
         if not mac_address:
             _LOGGER.error("Cannot restart connection: MAC address not found for client")
             return
@@ -74,8 +70,8 @@ class AirOSClientButton(AirOSEntity, ButtonEntity):
         log = f"Attempting to force restart connection for client: {mac_address}"
         _LOGGER.error(log)
         try:
-            await self.coordinator.airdevice.login()
-            result = await self.coordinator.airdevice.stakick(mac_address)
+            await self.coordinator.airos_device.login()
+            result = await self.coordinator.airos_device.stakick(mac_address)
             log = f"Restart resulted in {result}"
             _LOGGER.error(log)
 
@@ -85,4 +81,4 @@ class AirOSClientButton(AirOSEntity, ButtonEntity):
 
     def _get_remote_type(self) -> str:
         """Determine remote type."""
-        return "Access Point/Uplink" if self._client_data.get("remote",{}).get("mode","") == "ap-ptp" else "Station"
+        return "Access Point/Uplink" if self._client_data.remote.mode == "ap-ptp" else "Station"

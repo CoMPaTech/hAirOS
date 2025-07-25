@@ -1,34 +1,33 @@
-"""AirOS binary sensor component for Home Assistant."""
+"""AirOS Binary Sensor component for Home Assistant."""
 
 from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
 import logging
-from typing import Any
 
 from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
     BinarySensorEntity,
     BinarySensorEntityDescription,
 )
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+from homeassistant.helpers.typing import StateType
 
-from .coordinator import AirOSDataUpdateCoordinator
+from .coordinator import AirOSConfigEntry, AirOSData, AirOSDataUpdateCoordinator
 from .entity import AirOSEntity
-from .helpers import get_client_device_info, get_client_mac
+from .helpers import get_client_device_info
 
 _LOGGER = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True, kw_only=True)
-class AirOSBinarySensorEntityDescription(BinarySensorEntityDescription):  # type: ignore[misc]
-    """Describe an AirOS binary_sensor."""
+class AirOSBinarySensorEntityDescription(BinarySensorEntityDescription):
+    """Describe an AirOS binary sensor."""
 
-    value_fn: Callable[[dict[str, Any]], bool | None]
+    value_fn: Callable[[AirOSData], StateType]
 
 
 BINARY_SENSORS: tuple[AirOSBinarySensorEntityDescription, ...] = (
@@ -37,70 +36,38 @@ BINARY_SENSORS: tuple[AirOSBinarySensorEntityDescription, ...] = (
         translation_key="port_forwarding",
         device_class=BinarySensorDeviceClass.DOOR,
         entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data: data.get("portfw"),
+        value_fn=lambda data: data.portfw,
     ),
     AirOSBinarySensorEntityDescription(
-        key="services_dhcp_client",
+        key="dhcp_client",
         translation_key="dhcp_client",
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data: data.get("services", {}).get("dhcpc"),
+        value_fn=lambda data: data.services.dhcpc,
         entity_registry_enabled_default=False,
     ),
     AirOSBinarySensorEntityDescription(
-        key="services_dhcp_server",
+        key="dhcp_server",
         translation_key="dhcp_server",
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data: data.get("services", {}).get("dhcpd"),
+        value_fn=lambda data: data.services.dhcpd,
         entity_registry_enabled_default=False,
     ),
     AirOSBinarySensorEntityDescription(
-        key="services_dhcp6_server",
+        key="dhcp6_server",
         translation_key="dhcp6_server",
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data: data.get("services", {}).get("dhcp6d_stateful"),
+        value_fn=lambda data: data.services.dhcp6d_stateful,
         entity_registry_enabled_default=False,
     ),
     AirOSBinarySensorEntityDescription(
-        key="services_pppoe",
+        key="pppoe",
         translation_key="pppoe",
         device_class=BinarySensorDeviceClass.CONNECTIVITY,
         entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data: data.get("services", {}).get("pppoe"),
-        entity_registry_enabled_default=False,
-    ),
-    AirOSBinarySensorEntityDescription(
-        key="firewall_iptables",
-        translation_key="firewall_iptables",
-        device_class=BinarySensorDeviceClass.OPENING,
-        entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data: data.get("firewall", {}).get("iptables"),
-        entity_registry_enabled_default=False,
-    ),
-    AirOSBinarySensorEntityDescription(
-        key="firewall_ebtables",
-        translation_key="firewall_ebtables",
-        device_class=BinarySensorDeviceClass.OPENING,
-        entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data: data.get("firewall", {}).get("ebtables"),
-        entity_registry_enabled_default=False,
-    ),
-    AirOSBinarySensorEntityDescription(
-        key="firewall_ip6tables",
-        translation_key="firewall_ip6tables",
-        device_class=BinarySensorDeviceClass.OPENING,
-        entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data: data.get("firewall", {}).get("ip6tables"),
-        entity_registry_enabled_default=False,
-    ),
-    AirOSBinarySensorEntityDescription(
-        key="firewall_eb6tables",
-        translation_key="firewall_eb6tables",
-        device_class=BinarySensorDeviceClass.OPENING,
-        entity_category=EntityCategory.DIAGNOSTIC,
-        value_fn=lambda data: data.get("firewall", {}).get("eb6tables"),
+        value_fn=lambda data: data.services.pppoe,
         entity_registry_enabled_default=False,
     ),
 )
@@ -114,49 +81,41 @@ CLIENT_BINARY_SENSOR_DESCRIPTION = BinarySensorEntityDescription(
 
 async def async_setup_entry(
     hass: HomeAssistant,
-    config_entry: ConfigEntry,
+    config_entry: AirOSConfigEntry,
     async_add_entities: AddConfigEntryEntitiesCallback,
 ) -> None:
-    """Set up the AirOS sensors from a config entry."""
+    """Set up the AirOS binary sensors from a config entry."""
     coordinator = config_entry.runtime_data
 
-    entities = [
-        AirOSBinarySensor(coordinator, description) for description in BINARY_SENSORS
-    ]
-
-    wireless_data = coordinator.data.device_data.get("wireless", {})
+    entities = [AirOSBinarySensor(coordinator, description) for description in BINARY_SENSORS]
 
     # Determine remote stations
-    if "sta" in wireless_data:
-        for client_data in wireless_data["sta"]:
-            entities.append(AirOSClientBinarySensor(coordinator, client_data, wireless_data["sta"]))
+    for client_data in coordinator.data.wireless.sta:
+        entities.append(AirOSClientBinarySensor(coordinator, client_data, coordinator.data.wireless.sta))  # noqa: PERF401
 
     async_add_entities(entities, update_before_add=False)
 
 
-class AirOSBinarySensor(AirOSEntity, BinarySensorEntity):  # type: ignore[misc]
-    """Representation of a Binary Sensor."""
+class AirOSBinarySensor(AirOSEntity, BinarySensorEntity):
+    """Representation of a binary sensor."""
 
-    _attr_has_entity_name = True
-
-    entity_description = AirOSBinarySensorEntityDescription
+    entity_description: AirOSBinarySensorEntityDescription
 
     def __init__(
         self,
         coordinator: AirOSDataUpdateCoordinator,
-        description: BinarySensorEntityDescription,
-    ):  # pylint: disable=hass-return-type
-        """Initialize the sensor."""
+        description: AirOSBinarySensorEntityDescription,
+    ) -> None:
+        """Initialize the binary sensor."""
         super().__init__(coordinator)
-        self.coordinator = coordinator
 
         self.entity_description = description
-        self._attr_unique_id = f"{coordinator.data.device_id}_{description.key}"
+        self._attr_unique_id = f"{coordinator.data.host.device_id}_{description.key}"
 
     @property
     def is_on(self) -> bool | None:
-        """Return true if the binary sensor is on."""
-        return self.entity_description.value_fn(self.coordinator.data.device_data)
+        """Return the state of the binary sensor."""
+        return self.entity_description.value_fn(self.coordinator.data)
 
 
 class AirOSClientBinarySensor(AirOSEntity, BinarySensorEntity):
@@ -175,7 +134,7 @@ class AirOSClientBinarySensor(AirOSEntity, BinarySensorEntity):
         self.coordinator = coordinator
         self.entity_description = CLIENT_BINARY_SENSOR_DESCRIPTION
 
-        mac_lower = get_client_mac(self._client_data)
+        mac_lower = self._client_data.mac.lower()
         self._attr_unique_id = f"{coordinator.config_entry.unique_id}_{mac_lower}_connectivity"
 
         self._attr_device_info = get_client_device_info(coordinator.config_entry.unique_id, self._client_data)
@@ -187,7 +146,7 @@ class AirOSClientBinarySensor(AirOSEntity, BinarySensorEntity):
     def is_on(self) -> bool | None:
         """Return true if the client is currently connected."""
         for client in self._clients:
-            if client.get("mac") == self._client_data.get("mac"):
+            if client.mac == self._client_data.mac:
                 return True # Client found, thus connected
             return False # Client not found in the current list, thus disconnected
         return None # Return None if not in AP mode or no client data
@@ -199,5 +158,4 @@ class AirOSClientBinarySensor(AirOSEntity, BinarySensorEntity):
 
     def _update_client_attributes(self) -> None:
         """Update entity attributes based on current data."""
-        if self._client_data and "hostname" in self._client_data.get("remote",{}):
-            self._attr_name = self._client_data.get("remote",{})["hostname"]
+        self._attr_name = self._client_data.remote.hostname
