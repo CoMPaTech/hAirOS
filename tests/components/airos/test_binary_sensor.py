@@ -14,7 +14,7 @@ from tests.common import MockConfigEntry
 
 # Mock data for various scenarios
 MOCK_CONFIG = {
-    CONF_HOST: "192.168.1.1",
+    CONF_HOST: "1.1.1.1",
     CONF_USERNAME: "test_user",
     CONF_PASSWORD: "test_password",
 }
