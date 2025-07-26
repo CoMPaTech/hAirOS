@@ -2,6 +2,7 @@
 
 from unittest.mock import MagicMock
 
+from homeassistant.components.airos.coordinator import AirOSData
 from homeassistant.core import HomeAssistant
 from syrupy.assertion import SnapshotAssertion
 
@@ -9,7 +10,7 @@ from . import setup_integration
 
 from tests.common import MockConfigEntry
 from tests.components.diagnostics import get_diagnostics_for_config_entry
-from tests.typing import Any, ClientSessionGenerator
+from tests.typing import ClientSessionGenerator
 
 
 async def test_diagnostics(
@@ -17,7 +18,7 @@ async def test_diagnostics(
     hass_client: ClientSessionGenerator,
     mock_airos_client: MagicMock,
     mock_config_entry: MockConfigEntry,
-    ap_fixture: dict[str, Any],
+    ap_fixture: AirOSData,
     snapshot: SnapshotAssertion,
 ) -> None:
     """Test diagnostics."""

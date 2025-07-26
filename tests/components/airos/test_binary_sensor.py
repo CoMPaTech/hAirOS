@@ -1,8 +1,8 @@
 """Test the Ubiquiti airOS binary sensors."""
 
-from typing import Any
 from unittest.mock import AsyncMock
 
+from homeassistant.components.airos.coordinator import AirOSData
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
@@ -25,7 +25,7 @@ async def test_all_entities(
     snapshot: SnapshotAssertion,
     mock_airos_client: AsyncMock,
     mock_config_entry: MockConfigEntry,
-    ap_fixture: dict[str, Any],
+    ap_fixture: AirOSData,
     entity_registry: er.EntityRegistry,
 ) -> None:
     """Test all entities."""

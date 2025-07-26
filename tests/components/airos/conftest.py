@@ -3,10 +3,10 @@
 from collections.abc import Generator
 from unittest.mock import AsyncMock, patch
 
-from airos.airos8 import AirOSData
 import pytest
 
 from homeassistant.components.airos.const import DOMAIN
+from homeassistant.components.airos.coordinator import AirOSData
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 
 from tests.common import MockConfigEntry, load_json_object_fixture
