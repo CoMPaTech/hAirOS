@@ -6,13 +6,15 @@ from collections.abc import Callable
 from dataclasses import dataclass
 import logging
 
+from airos.data import Station
+
 from homeassistant.components.binary_sensor import (
     BinarySensorDeviceClass,
     BinarySensorEntity,
     BinarySensorEntityDescription,
 )
+from homeassistant.const import EntityCategory
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import EntityCategory
 from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
 from homeassistant.helpers.typing import StateType
 
@@ -87,13 +89,11 @@ async def async_setup_entry(
     """Set up the AirOS binary sensors from a config entry."""
     coordinator = config_entry.runtime_data
 
-    entities = [AirOSBinarySensor(coordinator, description) for description in BINARY_SENSORS]
+    async_add_entities([AirOSBinarySensor(coordinator, description) for description in BINARY_SENSORS], update_before_add=False)
 
     # Determine remote stations
-    for client_data in coordinator.data.wireless.sta:
-        entities.append(AirOSClientBinarySensor(coordinator, client_data, coordinator.data.wireless.sta))  # noqa: PERF401
-
-    async_add_entities(entities, update_before_add=False)
+    stations = coordinator.data.wireless.sta
+    async_add_entities([AirOSClientBinarySensor(coordinator, client_data, stations) for client_data in stations], update_before_add=False)
 
 
 class AirOSBinarySensor(AirOSEntity, BinarySensorEntity):
@@ -115,29 +115,24 @@ class AirOSBinarySensor(AirOSEntity, BinarySensorEntity):
     @property
     def is_on(self) -> bool | None:
         """Return the state of the binary sensor."""
-        return self.entity_description.value_fn(self.coordinator.data)
+        return bool(self.entity_description.value_fn(self.coordinator.data))
 
 
 class AirOSClientBinarySensor(AirOSEntity, BinarySensorEntity):
     """Represents a connected client (station) to the AirOS device."""
 
-    _attr_has_entity_name = True
-
     entity_description: BinarySensorEntityDescription
-    _attr_device_class = BinarySensorDeviceClass.CONNECTIVITY
 
-    def __init__(self, coordinator: AirOSDataUpdateCoordinator, client_data: str, clients: dict) -> None:
+    def __init__(self, coordinator: AirOSDataUpdateCoordinator, client_data: Station, clients: list[Station]) -> None:
         """Initialize the AirOS client binary sensor."""
         super().__init__(coordinator)
         self._client_data = client_data
         self._clients = clients
-        self.coordinator = coordinator
-        self.entity_description = CLIENT_BINARY_SENSOR_DESCRIPTION
 
         mac_lower = self._client_data.mac.lower()
         self._attr_unique_id = f"{coordinator.config_entry.unique_id}_{mac_lower}_connectivity"
 
-        self._attr_device_info = get_client_device_info(coordinator.config_entry.unique_id, self._client_data)
+        self._attr_device_info = get_client_device_info(coordinator, self._client_data)
 
         self._update_client_attributes()
 
