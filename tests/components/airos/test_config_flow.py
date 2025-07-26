@@ -11,6 +11,7 @@ from airos.exceptions import (
 import pytest
 
 from homeassistant.components.airos.const import DOMAIN
+from homeassistant.components.airos.coordinator import AirOSData
 from homeassistant.config_entries import SOURCE_USER
 from homeassistant.const import CONF_HOST, CONF_PASSWORD, CONF_USERNAME
 from homeassistant.core import HomeAssistant
@@ -27,7 +28,7 @@ async def test_form_creates_entry(
     hass: HomeAssistant,
     mock_setup_entry: AsyncMock,
     mock_airos_client: AsyncMock,
-    ap_fixture: dict[str, Any],
+    ap_fixture: AirOSData,
 ) -> None:
     """Test we get the form and create the appropriate entry."""
     result = await hass.config_entries.flow.async_init(

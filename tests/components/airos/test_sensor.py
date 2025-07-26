@@ -1,11 +1,11 @@
 """Test the Ubiquiti airOS sensors."""
 
 from datetime import timedelta
-from typing import Any
 from unittest.mock import AsyncMock
 
 from freezegun.api import FrozenDateTimeFactory
 from homeassistant.components.airos.const import SCAN_INTERVAL
+from homeassistant.components.airos.coordinator import AirOSData
 from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers import entity_registry as er
@@ -21,7 +21,7 @@ async def test_all_entities(
     snapshot: SnapshotAssertion,
     mock_airos_client: AsyncMock,
     mock_config_entry: MockConfigEntry,
-    ap_fixture: dict[str, Any],
+    ap_fixture: AirOSData,
     entity_registry: er.EntityRegistry,
     freezer: FrozenDateTimeFactory,
 ) -> None:

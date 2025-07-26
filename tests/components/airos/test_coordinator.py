@@ -11,7 +11,10 @@ from airos.exceptions import (
 )
 import pytest
 
-from homeassistant.components.airos.coordinator import AirOSDataUpdateCoordinator
+from homeassistant.components.airos.coordinator import (
+    AirOSData,
+    AirOSDataUpdateCoordinator,
+)
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.update_coordinator import ConfigEntryError, UpdateFailed
@@ -37,7 +40,7 @@ async def test_coordinator_async_update_data_exceptions(
     mock_hass: HomeAssistant,
     mock_config_entry: ConfigEntry,
     mock_airos_client: AsyncMock,
-    ap_fixture: dict[str, Any],
+    ap_fixture: AirOSData,
     expected_key: str,
     expectation_error: Any,
 ) -> None:

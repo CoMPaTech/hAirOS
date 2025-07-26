@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import logging
 
+from airos.data import Station
+
 from homeassistant.components.button import (
     ButtonDeviceClass,
     ButtonEntity,
@@ -46,7 +48,7 @@ class AirOSClientButton(AirOSEntity, ButtonEntity):
 
     entity_description: ButtonEntityDescription
 
-    def __init__(self, coordinator: AirOSDataUpdateCoordinator, client_data: dict) -> None:
+    def __init__(self, coordinator: AirOSDataUpdateCoordinator, client_data: Station) -> None:
         """Initialize the AirOS client button."""
         super().__init__(coordinator)
         self._client_data = client_data
@@ -56,7 +58,7 @@ class AirOSClientButton(AirOSEntity, ButtonEntity):
         self.mac_lower = client_data.mac.replace(":", "").lower()
         self._attr_unique_id = f"{coordinator.config_entry.unique_id}_{self.mac_lower}_restart_connection"
 
-        self._attr_device_info = get_client_device_info(coordinator.config_entry.unique_id, self._client_data)
+        self._attr_device_info = get_client_device_info(coordinator, self._client_data)
 
         self._attr_name = "Restart Connection"
 
@@ -81,4 +83,4 @@ class AirOSClientButton(AirOSEntity, ButtonEntity):
 
     def _get_remote_type(self) -> str:
         """Determine remote type."""
-        return "Access Point/Uplink" if self._client_data.remote.mode == "ap-ptp" else "Station"
+        return "Access Point/Uplink" if self._client_data.remote.mode.value == "ap-ptp" else "Station"
