@@ -20,6 +20,7 @@ class AirOSEntity(CoordinatorEntity[AirOSDataUpdateCoordinator]):
         super().__init__(coordinator)
 
         airos_data = self.coordinator.data
+
         url_schema = (
             "https"
             if coordinator.config_entry.data[SECTION_ADVANCED_SETTINGS][CONF_SSL]
@@ -33,7 +34,7 @@ class AirOSEntity(CoordinatorEntity[AirOSDataUpdateCoordinator]):
         self._attr_device_info = DeviceInfo(
             connections={(CONNECTION_NETWORK_MAC, airos_data.derived.mac)},
             configuration_url=configuration_url,
-            identifiers={(DOMAIN, str(airos_data.host.device_id))},
+            identifiers={(DOMAIN, str(airos_data.derived.mac))},
             manufacturer=MANUFACTURER,
             model=airos_data.host.devmodel,
             name=airos_data.host.hostname,

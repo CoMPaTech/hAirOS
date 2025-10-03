@@ -15,6 +15,11 @@ from tests.common import MockConfigEntry, snapshot_platform
 
 
 @pytest.mark.usefixtures("entity_registry_enabled_by_default")
+@pytest.mark.parametrize(
+    ("ap_fixture"),
+    ["airos_NanoStation_M5_sta_v6.3.16.json", "airos_loco5ac_ap-ptp.json"],
+    indirect=True,
+)
 async def test_all_entities(
     hass: HomeAssistant,
     snapshot: SnapshotAssertion,

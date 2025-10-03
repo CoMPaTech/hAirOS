@@ -24,6 +24,7 @@ async def test_all_entities(
     snapshot: SnapshotAssertion,
     mock_airos_client: AsyncMock,
     mock_config_entry: MockConfigEntry,
+    mock_async_get_firmware_data: AsyncMock,
     entity_registry: er.EntityRegistry,
 ) -> None:
     """Test all entities."""

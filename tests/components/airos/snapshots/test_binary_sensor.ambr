@@ -1,5 +1,152 @@
 # serializer version: 1
-# name: test_all_entities[binary_sensor.nanostation_5ac_ap_name_dhcp_client-entry]
+# name: test_all_entities[airos_NanoStation_M5_sta_v6.3.16.json][binary_sensor.nanostation_m5_dhcp_client-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'binary_sensor.nanostation_m5_dhcp_client',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.RUNNING: 'running'>,
+    'original_icon': None,
+    'original_name': 'DHCP client',
+    'platform': 'airos',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'dhcp_client',
+    'unique_id': 'XX:XX:XX:XX:XX:XX_dhcp_client',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_all_entities[airos_NanoStation_M5_sta_v6.3.16.json][binary_sensor.nanostation_m5_dhcp_client-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'running',
+      'friendly_name': 'NanoStation M5 DHCP client',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.nanostation_m5_dhcp_client',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_all_entities[airos_NanoStation_M5_sta_v6.3.16.json][binary_sensor.nanostation_m5_dhcp_server-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'binary_sensor.nanostation_m5_dhcp_server',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.RUNNING: 'running'>,
+    'original_icon': None,
+    'original_name': 'DHCP server',
+    'platform': 'airos',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'dhcp_server',
+    'unique_id': 'XX:XX:XX:XX:XX:XX_dhcp_server',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_all_entities[airos_NanoStation_M5_sta_v6.3.16.json][binary_sensor.nanostation_m5_dhcp_server-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'running',
+      'friendly_name': 'NanoStation M5 DHCP server',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.nanostation_m5_dhcp_server',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_all_entities[airos_NanoStation_M5_sta_v6.3.16.json][binary_sensor.nanostation_m5_pppoe_link-entry]
+  EntityRegistryEntrySnapshot({
+    'aliases': set({
+    }),
+    'area_id': None,
+    'capabilities': None,
+    'config_entry_id': <ANY>,
+    'config_subentry_id': <ANY>,
+    'device_class': None,
+    'device_id': <ANY>,
+    'disabled_by': None,
+    'domain': 'binary_sensor',
+    'entity_category': <EntityCategory.DIAGNOSTIC: 'diagnostic'>,
+    'entity_id': 'binary_sensor.nanostation_m5_pppoe_link',
+    'has_entity_name': True,
+    'hidden_by': None,
+    'icon': None,
+    'id': <ANY>,
+    'labels': set({
+    }),
+    'name': None,
+    'options': dict({
+    }),
+    'original_device_class': <BinarySensorDeviceClass.CONNECTIVITY: 'connectivity'>,
+    'original_icon': None,
+    'original_name': 'PPPoE link',
+    'platform': 'airos',
+    'previous_unique_id': None,
+    'suggested_object_id': None,
+    'supported_features': 0,
+    'translation_key': 'pppoe',
+    'unique_id': 'XX:XX:XX:XX:XX:XX_pppoe',
+    'unit_of_measurement': None,
+  })
+# ---
+# name: test_all_entities[airos_NanoStation_M5_sta_v6.3.16.json][binary_sensor.nanostation_m5_pppoe_link-state]
+  StateSnapshot({
+    'attributes': ReadOnlyDict({
+      'device_class': 'connectivity',
+      'friendly_name': 'NanoStation M5 PPPoE link',
+    }),
+    'context': <ANY>,
+    'entity_id': 'binary_sensor.nanostation_m5_pppoe_link',
+    'last_changed': <ANY>,
+    'last_reported': <ANY>,
+    'last_updated': <ANY>,
+    'state': 'off',
+  })
+# ---
+# name: test_all_entities[airos_loco5ac_ap-ptp.json][binary_sensor.nanostation_5ac_ap_name_dhcp_client-entry]
   EntityRegistryEntrySnapshot({
     'aliases': set({
     }),
@@ -34,7 +181,7 @@
     'unit_of_measurement': None,
   })
 # ---
-# name: test_all_entities[binary_sensor.nanostation_5ac_ap_name_dhcp_client-state]
+# name: test_all_entities[airos_loco5ac_ap-ptp.json][binary_sensor.nanostation_5ac_ap_name_dhcp_client-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'running',
@@ -48,7 +195,7 @@
     'state': 'off',
   })
 # ---
-# name: test_all_entities[binary_sensor.nanostation_5ac_ap_name_dhcp_server-entry]
+# name: test_all_entities[airos_loco5ac_ap-ptp.json][binary_sensor.nanostation_5ac_ap_name_dhcp_server-entry]
   EntityRegistryEntrySnapshot({
     'aliases': set({
     }),
@@ -83,7 +230,7 @@
     'unit_of_measurement': None,
   })
 # ---
-# name: test_all_entities[binary_sensor.nanostation_5ac_ap_name_dhcp_server-state]
+# name: test_all_entities[airos_loco5ac_ap-ptp.json][binary_sensor.nanostation_5ac_ap_name_dhcp_server-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'running',
@@ -97,7 +244,7 @@
     'state': 'off',
   })
 # ---
-# name: test_all_entities[binary_sensor.nanostation_5ac_ap_name_dhcpv6_server-entry]
+# name: test_all_entities[airos_loco5ac_ap-ptp.json][binary_sensor.nanostation_5ac_ap_name_dhcpv6_server-entry]
   EntityRegistryEntrySnapshot({
     'aliases': set({
     }),
@@ -132,7 +279,7 @@
     'unit_of_measurement': None,
   })
 # ---
-# name: test_all_entities[binary_sensor.nanostation_5ac_ap_name_dhcpv6_server-state]
+# name: test_all_entities[airos_loco5ac_ap-ptp.json][binary_sensor.nanostation_5ac_ap_name_dhcpv6_server-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'running',
@@ -146,7 +293,7 @@
     'state': 'off',
   })
 # ---
-# name: test_all_entities[binary_sensor.nanostation_5ac_ap_name_port_forwarding-entry]
+# name: test_all_entities[airos_loco5ac_ap-ptp.json][binary_sensor.nanostation_5ac_ap_name_port_forwarding-entry]
   EntityRegistryEntrySnapshot({
     'aliases': set({
     }),
@@ -181,7 +328,7 @@
     'unit_of_measurement': None,
   })
 # ---
-# name: test_all_entities[binary_sensor.nanostation_5ac_ap_name_port_forwarding-state]
+# name: test_all_entities[airos_loco5ac_ap-ptp.json][binary_sensor.nanostation_5ac_ap_name_port_forwarding-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'friendly_name': 'NanoStation 5AC ap name Port forwarding',
@@ -194,7 +341,7 @@
     'state': 'off',
   })
 # ---
-# name: test_all_entities[binary_sensor.nanostation_5ac_ap_name_pppoe_link-entry]
+# name: test_all_entities[airos_loco5ac_ap-ptp.json][binary_sensor.nanostation_5ac_ap_name_pppoe_link-entry]
   EntityRegistryEntrySnapshot({
     'aliases': set({
     }),
@@ -229,7 +376,7 @@
     'unit_of_measurement': None,
   })
 # ---
-# name: test_all_entities[binary_sensor.nanostation_5ac_ap_name_pppoe_link-state]
+# name: test_all_entities[airos_loco5ac_ap-ptp.json][binary_sensor.nanostation_5ac_ap_name_pppoe_link-state]
   StateSnapshot({
     'attributes': ReadOnlyDict({
       'device_class': 'connectivity',
