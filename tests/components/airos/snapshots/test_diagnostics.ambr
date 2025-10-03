@@ -12,6 +12,16 @@
           'number': 2,
         }),
       ]),
+      'derived': dict({
+        'access_point': True,
+        'mac': '**REDACTED**',
+        'mac_interface': 'br0',
+        'mode': 'point_to_point',
+        'ptmp': False,
+        'ptp': True,
+        'role': 'access_point',
+        'station': False,
+      }),
       'firewall': dict({
         'eb6tables': False,
         'ebtables': False,
@@ -20,13 +30,18 @@
       }),
       'genuine': '/images/genuine.png',
       'gps': dict({
+        'alt': None,
+        'dim': None,
+        'dop': None,
         'fix': 0,
         'lat': '**REDACTED**',
         'lon': '**REDACTED**',
+        'sats': None,
+        'time_synced': None,
       }),
       'host': dict({
         'cpuload': 10.10101,
-        'device_id': '**REDACTED**',
+        'device_id': '03aa0d0b40fed0a47088293584ef5432',
         'devmodel': 'NanoStation 5AC loco',
         'freeram': 16564224,
         'fwversion': 'v8.7.17',
@@ -131,6 +146,7 @@
       }),
       'unms': dict({
         'status': 0,
+        'timestamp': None,
       }),
       'wireless': dict({
         'antenna_gain': 13,
@@ -159,6 +175,7 @@
           'dl_capacity': 647400,
           'ff_cap_rep': False,
           'fixed_frame': False,
+          'flex_mode': None,
           'gps_sync': False,
           'rx_use': 42,
           'tx_use': 6,
@@ -461,6 +478,7 @@
               }),
               'ul_capacity': 540540,
             }),
+            'airos_connected': True,
             'cb_capacity_expect': 416000,
             'chainrssi': list([
               35,
@@ -489,7 +507,7 @@
               ]),
               'compat_11n': 0,
               'cpuload': 43.564301,
-              'device_id': '**REDACTED**',
+              'device_id': 'd4f4cdf82961e619328a8f72f8d7653b',
               'distance': 1,
               'ethlist': list([
                 dict({
@@ -509,9 +527,14 @@
               ]),
               'freeram': 14290944,
               'gps': dict({
+                'alt': None,
+                'dim': None,
+                'dop': None,
                 'fix': 0,
                 'lat': '**REDACTED**',
                 'lon': '**REDACTED**',
+                'sats': None,
+                'time_synced': None,
               }),
               'height': 2,
               'hostname': '**REDACTED**',
@@ -553,6 +576,7 @@
               'tx_throughput': 16023,
               'unms': dict({
                 'status': 0,
+                'timestamp': None,
               }),
               'uptime': 265320,
               'version': 'WA.ar934x.v8.7.17.48152.250620.2132',
@@ -608,6 +632,10 @@
       }),
     }),
     'entry_data': dict({
+      'advanced_settings': dict({
+        'ssl': True,
+        'verify_ssl': False,
+      }),
       'host': '**REDACTED**',
       'password': '**REDACTED**',
       'username': 'ubnt',
