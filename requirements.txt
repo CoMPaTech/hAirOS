@@ -1,2 +1,2 @@
 aiohttp
-airos==0.5.5
+airos==0.5.6
