@@ -6,6 +6,6 @@
   "documentation": "https://github.com/CoMPaTech/hairos/",
   "iot_class": "local_polling",
   "quality_scale": "bronze",
-  "requirements": ["https://test-files.pythonhosted.org/packages/8d/90/1d23e31bf98f41d569f022903385d072c6051d4055734902070532cdb7b4/airos-0.5.7a3.tar.gz#airos==0.5.7a3"],
-  "version": "2.1.2a3"
+  "requirements": ["https://test-files.pythonhosted.org/packages/fc/aa/85655abf25ce0fffb9eec31210668526ecd68ba3f09293eb8cdf02079572/airos-0.5.7a4.tar.gz#airos==0.5.7a4"],
+  "version": "2.1.2a4"
 }
