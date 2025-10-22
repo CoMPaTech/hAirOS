@@ -125,26 +125,6 @@ COMMON_SENSORS: tuple[AirOSSensorEntityDescription, ...] = (
         entity_registry_enabled_default=False,
     ),
     AirOSSensorEntityDescription(
-        key="wireless_throughput_tx",
-        translation_key="wireless_throughput_tx",
-        native_unit_of_measurement=UnitOfDataRate.KILOBITS_PER_SECOND,
-        device_class=SensorDeviceClass.DATA_RATE,
-        state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=0,
-        suggested_unit_of_measurement=UnitOfDataRate.MEGABITS_PER_SECOND,
-        value_fn=lambda data: data.wireless.throughput.tx,
-    ),
-    AirOSSensorEntityDescription(
-        key="wireless_throughput_rx",
-        translation_key="wireless_throughput_rx",
-        native_unit_of_measurement=UnitOfDataRate.KILOBITS_PER_SECOND,
-        device_class=SensorDeviceClass.DATA_RATE,
-        state_class=SensorStateClass.MEASUREMENT,
-        suggested_display_precision=0,
-        suggested_unit_of_measurement=UnitOfDataRate.MEGABITS_PER_SECOND,
-        value_fn=lambda data: data.wireless.throughput.rx,
-    ),
-    AirOSSensorEntityDescription(
         key="wireless_antenna_gain",
         translation_key="wireless_antenna_gain",
         native_unit_of_measurement=SIGNAL_STRENGTH_DECIBELS,
@@ -152,10 +132,7 @@ COMMON_SENSORS: tuple[AirOSSensorEntityDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         value_fn=lambda data: data.wireless.antenna_gain,
     ),
-)
-
-AIROS8_SENSORS: tuple[AirOS8SensorEntityDescription, ...] = (
-    AirOS8SensorEntityDescription(
+    AirOSSensorEntityDescription(
         key="wireless_polling_dl_capacity",
         translation_key="wireless_polling_dl_capacity",
         native_unit_of_measurement=UnitOfDataRate.KILOBITS_PER_SECOND,
@@ -165,7 +142,7 @@ AIROS8_SENSORS: tuple[AirOS8SensorEntityDescription, ...] = (
         suggested_unit_of_measurement=UnitOfDataRate.MEGABITS_PER_SECOND,
         value_fn=lambda data: data.wireless.polling.dl_capacity,
     ),
-    AirOS8SensorEntityDescription(
+    AirOSSensorEntityDescription(
         key="wireless_polling_ul_capacity",
         translation_key="wireless_polling_ul_capacity",
         native_unit_of_measurement=UnitOfDataRate.KILOBITS_PER_SECOND,
@@ -174,6 +151,29 @@ AIROS8_SENSORS: tuple[AirOS8SensorEntityDescription, ...] = (
         suggested_display_precision=0,
         suggested_unit_of_measurement=UnitOfDataRate.MEGABITS_PER_SECOND,
         value_fn=lambda data: data.wireless.polling.ul_capacity,
+    ),
+)
+
+AIROS8_SENSORS: tuple[AirOS8SensorEntityDescription, ...] = (
+    AirOS8SensorEntityDescription(
+        key="wireless_throughput_tx",
+        translation_key="wireless_throughput_tx",
+        native_unit_of_measurement=UnitOfDataRate.KILOBITS_PER_SECOND,
+        device_class=SensorDeviceClass.DATA_RATE,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
+        suggested_unit_of_measurement=UnitOfDataRate.MEGABITS_PER_SECOND,
+        value_fn=lambda data: data.wireless.throughput.tx,
+    ),
+    AirOS8SensorEntityDescription(
+        key="wireless_throughput_rx",
+        translation_key="wireless_throughput_rx",
+        native_unit_of_measurement=UnitOfDataRate.KILOBITS_PER_SECOND,
+        device_class=SensorDeviceClass.DATA_RATE,
+        state_class=SensorStateClass.MEASUREMENT,
+        suggested_display_precision=0,
+        suggested_unit_of_measurement=UnitOfDataRate.MEGABITS_PER_SECOND,
+        value_fn=lambda data: data.wireless.throughput.rx,
     ),
 )
 
