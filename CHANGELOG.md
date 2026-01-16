@@ -2,6 +2,10 @@
 
 ## Changelog
 
+### OCT 2025 [2.1.x]
+
+- Migrated to a test instance for Core (not to be used on a regular basis!)
+
 ### JUL 2025 [0.1.0]
 
 - Functional device reconnect and align with potential Core PR
