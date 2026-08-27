@@ -1,12 +1,11 @@
 {
   "domain": "airos",
-  "name": "Ubiquiti UISP AirOS",
+  "name": "Ubiquiti airOS",
   "codeowners": ["@CoMPaTech"],
   "config_flow": true,
-  "documentation": "https://github.com/CoMPaTech/hairos",
-  "integration_type": "device",
+  "documentation": "https://github.com/CoMPaTech/hairos/",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/CoMPaTech/hairos/issues",
-  "requirements": ["airos==0.1.6"],
-  "version": "0.1.6"
+  "quality_scale": "bronze",
+  "requirements": ["https://test-files.pythonhosted.org/packages/56/8b/a6bda35aae475cd913a2cf738c2fb4d3b8cf11742134008073e1cf73ff1e/airos-0.5.7a14.tar.gz#airos==0.5.7a14"],
+  "version": "2.1.2a14"
 }

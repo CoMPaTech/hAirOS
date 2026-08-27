@@ -1,5 +1,5 @@
 {
-  "name": "Ubiquity AirOS",
-  "homeassistant": "2025.7.0",
+  "name": "Ubiquiti AirOS Core Testing",
+  "homeassistant": "2025.10.0",
   "render_readme": true
 }

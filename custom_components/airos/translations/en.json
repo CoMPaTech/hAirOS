@@ -1,7 +1,9 @@
 {
     "config": {
         "abort": {
-            "already_configured": "Device is already configured"
+            "already_configured": "Device is already configured",
+            "reauth_successful": "Re-authentication was successful",
+            "unique_id_mismatch": "Re-authentication should be used for the same device not a new one"
         },
         "error": {
             "cannot_connect": "Failed to connect",
@@ -11,6 +13,14 @@
         },
         "flow_title": "Ubiquiti airOS device",
         "step": {
+            "reauth_confirm": {
+                "data": {
+                    "password": "Password"
+                },
+                "data_description": {
+                    "password": "Password configured through the UISP app or web interface"
+                }
+            },
             "user": {
                 "data": {
                     "host": "Host",
@@ -18,9 +28,21 @@
                     "username": "Username"
                 },
                 "data_description": {
-                    "host": "IP-address or hostname of the airOS device",
+                    "host": "IP address or hostname of the airOS device",
                     "password": "Password configured through the UISP app or web interface",
                     "username": "Administrator username for the airOS device, normally 'ubnt'"
+                },
+                "sections": {
+                    "advanced_settings": {
+                        "data": {
+                            "ssl": "Use HTTPS",
+                            "verify_ssl": "Verify SSL certificate"
+                        },
+                        "data_description": {
+                            "ssl": "Whether the connection should be encrypted (required for most devices)",
+                            "verify_ssl": "Whether the certificate should be verified when using HTTPS. This should be off for self-signed certificates"
+                        }
+                    }
                 }
             }
         }
@@ -37,10 +59,10 @@
                 "name": "DHCP server"
             },
             "port_forwarding": {
-                "name": "Port forwarding active"
+                "name": "Port forwarding"
             },
             "pppoe": {
-                "name": "PPPoE"
+                "name": "PPPoE link"
             }
         },
         "sensor": {
@@ -54,8 +76,14 @@
                     "router": "Router"
                 }
             },
+            "host_uptime": {
+                "name": "Uptime"
+            },
             "wireless_antenna_gain": {
                 "name": "Antenna gain"
+            },
+            "wireless_distance": {
+                "name": "Wireless distance"
             },
             "wireless_essid": {
                 "name": "Wireless SSID"
@@ -66,8 +94,8 @@
             "wireless_mode": {
                 "name": "Wireless mode",
                 "state": {
-                    "ap-ptp": "Access point",
-                    "sta-ptp": "Station"
+                    "point_to_multipoint": "Point-to-multipoint",
+                    "point_to_point": "Point-to-point"
                 }
             },
             "wireless_polling_dl_capacity": {
@@ -78,6 +106,13 @@
             },
             "wireless_remote_hostname": {
                 "name": "Remote hostname"
+            },
+            "wireless_role": {
+                "name": "Wireless role",
+                "state": {
+                    "access_point": "Access point",
+                    "station": "Station"
+                }
             },
             "wireless_throughput_rx": {
                 "name": "Throughput receive (actual)"
